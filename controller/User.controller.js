@@ -45,6 +45,7 @@ export const registerUser=async(req,res)=>{
 }
 
 
+//login user: /api/user/login
 export const loginUser=async(req,res)=>{
     try{
         const {email,password}=req.body;
@@ -78,6 +79,23 @@ export const loginUser=async(req,res)=>{
         res.status(200).json({message:"User logged in successfully",user:findUserByEmail});
     }
     catch(error){
+        console.log(error);
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+
+
+
+//logout user: /api/user/logout
+export const logoutUser=async(req,res)=>{
+    try{
+        res.clearCookie("token",{
+            httpOnly:true,
+            secure:process.env.NODE_ENV==="production",
+            sameSite:"strict"
+        })
+        res.status(200).json({message:"User logged out successfully"});
+    }catch(error){
         console.log(error);
         res.status(500).json({message:"Internal server error"});
     }
