@@ -37,7 +37,7 @@ export const registerUser=async(req,res)=>{
             sameSite:"strict",
             maxAge:7*24*60*60*1000 
         })
-        res.status(201).json({message:"User registered successfully"})
+        res.status(201).json({message:"User registered successfully",user:newUser});
     }catch(error){
         console.log(error)
         res.status(500).json({message:"Internal server error"})
@@ -45,3 +45,40 @@ export const registerUser=async(req,res)=>{
 }
 
 
+export const loginUser=async(req,res)=>{
+    try{
+        const {email,password}=req.body;
+        if(!email || !password){
+            return res.status(400).json({message:"All fields are required"});
+        }
+
+        const findUserByEmail=await User.findOne({email})
+        if(!findUserByEmail){
+            return res.status(400).json({message:"Invalid credentials"})
+        }
+
+        const isPasswordValid=await bcrypt.compare(password,findUserByEmail.password);
+        if(!isPasswordValid){
+            return res.status(400).json({message:"Invalid credentials"})
+        }
+
+        const token=jwt.sign({
+            id:findUserByEmail._id
+        },process.env.JWT_SECRET,{
+            expiresIn:"7d"
+        })
+
+        res.cookie("token",token,{
+            httpOnly:true,
+            secure:process.env.NODE_ENV==="production",
+            sameSite:"strict",
+            maxAge:7*24*60*60*1000 
+        })
+
+        res.status(200).json({message:"User logged in successfully",user:findUserByEmail});
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({message:"Internal server error"});
+    }
+}
