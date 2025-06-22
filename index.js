@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { connectDB } from './config/ConnectDb.js';
 import userRoutes from './routes/User.route.js';
+import sellerRoutes from './routes/Seller.route.js';
 dotenv.config();
 
 
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/user',userRoutes);
+app.use('/api/seller',sellerRoutes)
 
 
 app.listen(process.env.PORT,()=>(
