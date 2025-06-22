@@ -44,3 +44,20 @@ export const LogoutSeller=async(req,res)=>{
         return res.status(500).json({message:"Internal server error"});
     }
 }
+
+
+
+//authentication seller:/api/seller/is-auth
+export const isSellerAuthenticated=async(req,res)=>{
+    try{
+        const sellerEmail=req.seller;
+        if(!sellerEmail){
+            return  res.status(400).json
+        }
+        res.status(200).json({message:"Seller is authenticated",email:sellerEmail});
+    }
+    catch(error){
+        console.log(error);
+        return res.status(500).json({message:"Internal server error"});
+    }
+}
