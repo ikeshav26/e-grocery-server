@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 
 
 //register user: /api/user/register
-
 export const registerUser=async(req,res)=>{
     try{
         const {name,email,password}=req.body;
@@ -96,6 +95,25 @@ export const logoutUser=async(req,res)=>{
         })
         res.status(200).json({message:"User logged out successfully"});
     }catch(error){
+        console.log(error);
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+
+
+
+//authentication isAuthenticated: /api/user/is-auth
+export const isAuthenticated=async(req,res)=>{
+    try{
+        const userId=req.user;
+        if(!userId){
+            return res.status(401).json({message:"Unauthorized access"});
+        }
+
+        const user=await User.findById(userId).select("-password");
+        res.status(200).json({message:"User is authenticated",user});
+    }
+    catch(error){
         console.log(error);
         res.status(500).json({message:"Internal server error"});
     }
