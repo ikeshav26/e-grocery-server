@@ -27,3 +27,20 @@ export const LoginSeller=async(req,res)=>{
         return res.status(500).json({message:"Internal server error"});
     }
 }
+
+
+
+//seller logout : /api/seller/logout
+export const LogoutSeller=async(req,res)=>{
+    try{
+        res.clearCookie("sellerToken",{
+            httpOnly:true,
+            secure:process.env.NODE_ENV==="production",
+            sameSite:"strict"
+        });
+        return res.status(200).json({message:"Seller logged out successfully"});
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({message:"Internal server error"});
+    }
+}
