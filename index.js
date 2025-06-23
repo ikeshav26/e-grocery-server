@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/ConnectDb.js';
 import userRoutes from './routes/User.route.js';
 import sellerRoutes from './routes/Seller.route.js';
+import productRoutes from './routes/Product.route.js';
 import { connectCloudinary } from './config/Cloudinary.js';
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/user',userRoutes);
 app.use('/api/seller',sellerRoutes)
+app.use('/api/product',productRoutes);
 
 
 app.listen(process.env.PORT,()=>(
