@@ -5,11 +5,13 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/ConnectDb.js';
 import userRoutes from './routes/User.route.js';
 import sellerRoutes from './routes/Seller.route.js';
+import { connectCloudinary } from './config/Cloudinary.js';
 dotenv.config();
 
 
 const app=express();
 connectDB()
+connectCloudinary();
 
 
 app.use(express.json());
